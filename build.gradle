@@ -20,6 +20,8 @@ repositories {
     mavenCentral()
     maven { url 'https://repo.repsy.io/mvn/darkvanityoflight/recraftedcivilizations' }
     spigot()
+    maven {url 'https://repo.extendedclip.com/content/repositories/placeholderapi/'}
+    maven { url 'https://jitpack.io' }
 }
 // Kotlin stuff
 dependencies {
@@ -33,6 +35,8 @@ dependencies {
     compileOnly spigotApi()
     compileOnly 'com.github.recraftedcivilizations:RecraftedCore:3.+'
     compileOnly 'com.github.recraftedcivilizations:DarkCitizens:1.+'
+    compileOnly 'me.clip:placeholderapi:+'
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 }
 
 // Test stuff
@@ -42,7 +46,7 @@ test {
 
 dependencies {
     testCompile spigotApi()
-    testCompile 'com.github.darkvanityoflight:RecraftedCore:2.+'
+    testCompile 'com.github.recraftedcivilizations:RecraftedCore:3.+'
 }
 
 // Jvm Target
