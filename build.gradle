@@ -17,7 +17,7 @@ def pluginAuthors = []
 // Base repos
 repositories {
     mavenCentral()
-    maven { url 'https://repo.repsy.io/mvn/darkvanityoflight/darkmods' }
+    maven { url 'https://repo.repsy.io/mvn/darkvanityoflight/recraftedcivilizations' }
     spigot()
 }
 // Kotlin stuff
