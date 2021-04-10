@@ -61,3 +61,26 @@ bukkit {
     }
 
 }
+
+publishing {
+    publications {
+        recraftedCore(MavenPublication) {
+            groupId = 'com.github.recraftedcivilizations'
+            artifactId = pluginName
+            version = this.version
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = 'RecraftedCivilizations'
+            //credentials(PasswordCredentials)
+            url = 'https://repo.repsy.io/mvn/darkvanityoflight/recraftedcivilizations'
+
+            credentials {
+                username project.RecraftedCivilizationsUsername
+                password project.RecraftedCivilizationsPassword
+            }
+        }
+    }
+}
