@@ -31,7 +31,7 @@ dependencies {
 // Minecraft deps
 dependencies {
     compileOnly spigotApi()
-    compileOnly 'com.github.darkvanityoflight:RecraftedCore:2.+'
+    compileOnly 'com.github.recraftedcivilizations:RecraftedCore:3.+'
     compileOnly 'com.gihub.recraftedcivilizations:DarkCitizens:1.+'
 }
 
