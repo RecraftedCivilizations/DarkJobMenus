@@ -32,6 +32,7 @@ dependencies {
 dependencies {
     compileOnly spigotApi()
     compileOnly 'com.github.darkvanityoflight:RecraftedCore:2.+'
+    compileOnly 'com.gihub.recraftedcivilizations:DarkCitizens:1.+'
 }
 
 // Test stuff
