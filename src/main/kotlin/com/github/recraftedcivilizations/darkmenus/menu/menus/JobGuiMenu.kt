@@ -8,6 +8,7 @@ import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
 import com.github.recraftedcivilizations.darkmenus.menu.GUIMenu
 import com.github.recraftedcivilizations.darkmenus.menu.IJobMenu
 import com.github.recraftedcivilizations.darkmenus.option.GUIOption
+import com.github.recraftedcivilizations.darkmenus.option.IOption
 
 import org.bukkit.entity.Player
 
@@ -22,21 +23,32 @@ import org.bukkit.entity.Player
  * @param job The job this GUI is for
  * @param bukkitWrapper The bukkit wrapper, debugging purposes only
  */
-class JobGuiMenu(override val name: String, override val options: List<GUIOption>, override val job: IJob, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : IJobMenu, GUIMenu {
+class JobGuiMenu(override val name: String, options: List<IOption>, override val job: IJob, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : IJobMenu, GUIMenu {
 
     private val gui: InventoryGUI
+    override val options: List<GUIOption>
 
     init {
 
+        var opts = emptyList<GUIOption>().toMutableList()
+
+        for (option in options){
+            if (option is GUIOption){
+                opts.add(option)
+            }
+        }
+
+        this.options = opts
+
         // Make the number of options dividable by 9
         // +1 Because of the Close button
-        var invSize = options.size + 1
+        var invSize = this.options.size + 1
         if(invSize % 9 != 0){
             invSize += (9 - (invSize % 9))
         }
         gui = InventoryGUI(invSize, name)
 
-        for (item in options){
+        for (item in this.options){
             gui.addItem(item.displayItem)
         }
 
