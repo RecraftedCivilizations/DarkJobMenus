@@ -32,7 +32,7 @@ class PricedCommandGUIOption(
     override val command: String,
     override val price: Int,
     private val economy: Economy,
-    private val bukkitWrapper: BukkitWrapper
+    private val bukkitWrapper: BukkitWrapper = BukkitWrapper()
 ) : GUIOption, ICommandOption, IPricedOption{
     override val displayItem = OptionItem(ItemStack(icon), this)
 
