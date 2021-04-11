@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack
  * @param bukkitWrapper The bukkit wrapper, debugging purposes only
  * @property displayItem The Clickable item this will be shown as
  */
-class CommandGUIOption(private val icon: Material, override val command: String, private val bukkitWrapper: BukkitWrapper) : GUIOption, ICommandOption{
+class CommandGUIOption(private val icon: Material, override val command: String, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : GUIOption, ICommandOption{
     override val displayItem: Clickable = OptionItem(ItemStack(icon), this)
 
     /**
