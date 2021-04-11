@@ -17,6 +17,7 @@ object MenuFactory {
         if (isGui && isJobSpecific){
             return  JobGuiMenu(name, options, job!!)
         }else{
+            bukkitWrapper.severe("There is no such menu as you defined! If you really need this create an issue at my Github!")
             throw NotImplementedError("There is no such menu as you defined")
         }
     }
