@@ -1,0 +1,69 @@
+package com.github.recraftedcivilizations.darkmenus.option.options
+
+import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
+import com.github.recraftedcivilizations.darkmenus.option.IOption
+import net.milkbowl.vault.economy.Economy
+import org.bukkit.Material
+
+/**
+ * @author DarkVanityOfLight
+ */
+
+/**
+ * Create new options here
+ */
+object OptionFactory {
+    private var bukkitWrapper = BukkitWrapper()
+
+    /**
+     * Set the bukkit wrapper debugg purposes only
+     * @param bukkitWrapper The new bukkit wrapper
+     */
+    fun setBukkitWrapper(bukkitWrapper: BukkitWrapper){
+        this.bukkitWrapper = bukkitWrapper
+    }
+
+    /**
+     * Create a new option
+     * @param isGuiOption Determine if the option should be representable in a Inventory GUI
+     * @param isPricedOption Determine if the option should have a price to activate
+     * @param isCommandOption Determine if the option should execute a command as action
+     * @param economy The economy to draw money from, only required if [isPricedOption] is set
+     * @param command The command to execute, only required if [isCommandOption] is set
+     * @param price The price this option should cost, only required if [isPricedOption] is set
+     * @param icon The icon to display, only required if [isGuiOption] is set
+     * @throws IllegalArgumentException If the arguments required for the type of option requested do not match
+     * @return The requested option
+     */
+    fun newOption(isGuiOption: Boolean, isPricedOption: Boolean, isCommandOption: Boolean, economy: Economy? = null, command: String? = null, price: Int?, icon: Material? = null): IOption {
+
+        if (isGuiOption){
+            if (icon == null) {
+                bukkitWrapper.severe("You need to supply an icon to create an GUI option")
+                throw IllegalArgumentException("You need to supply an icon to create an GUI option")
+            }
+
+            if (isCommandOption){
+
+                if (command == null) {
+                    bukkitWrapper.severe("You need to supply a command to create an command option")
+                    throw IllegalArgumentException("You need to supply a command to create a command option")
+                }
+
+                if (isPricedOption){
+                    if (price == null) {
+                        bukkitWrapper.severe("You need to supply a price to create a priced option")
+                        throw IllegalArgumentException("You need to supply an price to create an priced option")
+                    }
+
+                    return PricedCommandGUIOption(icon, command!!, price!!, economy!!)
+                }else{
+                    return CommandGUIOption(icon, command!!)
+                }
+            }
+        }
+
+        if (isGuiOption && isPricedOption && isCommandOption){
+        }if(isGuiOption && isCommandOption)
+    }
+}
