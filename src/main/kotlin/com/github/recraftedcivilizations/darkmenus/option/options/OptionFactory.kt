@@ -1,9 +1,11 @@
 package com.github.recraftedcivilizations.darkmenus.option.options
 
+import com.github.recraftedcivilizations.darkcitizens.dPlayer.DPlayer
 import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
 import com.github.recraftedcivilizations.darkmenus.option.IOption
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Material
+import org.bukkit.entity.Player
 
 /**
  * @author DarkVanityOfLight
@@ -33,6 +35,7 @@ object OptionFactory {
      * @param price The price this option should cost, only required if [isPricedOption] is set
      * @param icon The icon to display, only required if [isGuiOption] is set
      * @throws IllegalArgumentException If the arguments required for the type of option requested do not match
+     * @throws NotImplementedError If the requested option is not available yet
      * @return The requested option
      */
     fun newOption(isGuiOption: Boolean, isPricedOption: Boolean, isCommandOption: Boolean, economy: Economy? = null, command: String? = null, price: Int?, icon: Material? = null): IOption {
@@ -56,14 +59,20 @@ object OptionFactory {
                         throw IllegalArgumentException("You need to supply an price to create an priced option")
                     }
 
-                    return PricedCommandGUIOption(icon, command!!, price!!, economy!!)
+                    return PricedCommandGUIOption(icon, command, price, economy!!)
                 }else{
-                    return CommandGUIOption(icon, command!!)
+                    return CommandGUIOption(icon, command)
                 }
+            }else{
+
+                bukkitWrapper.severe("There is no implementation for the type of option you requested")
+                throw NotImplementedError("There is no implementation for the type of option you requested")
             }
+        }else{
+            bukkitWrapper.severe("There is no implementation for the type of option you requested")
+            throw NotImplementedError("There is no implementation for the type of option you requested")
         }
 
-        if (isGuiOption && isPricedOption && isCommandOption){
-        }if(isGuiOption && isCommandOption)
+
     }
 }
