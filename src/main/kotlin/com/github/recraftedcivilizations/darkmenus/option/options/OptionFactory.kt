@@ -40,27 +40,35 @@ object OptionFactory {
      */
     fun newOption(isGuiOption: Boolean, isPricedOption: Boolean, isCommandOption: Boolean, economy: Economy? = null, command: String? = null, price: Int?, icon: Material? = null): IOption {
 
+        // Check if we should create a GUI option
         if (isGuiOption){
+            // Check that the icon is given
             if (icon == null) {
                 bukkitWrapper.severe("You need to supply an icon to create an GUI option")
                 throw IllegalArgumentException("You need to supply an icon to create an GUI option")
             }
 
+            // Check if we have an command option
             if (isCommandOption){
 
+                //Check that we have a command supplied
                 if (command == null) {
                     bukkitWrapper.severe("You need to supply a command to create an command option")
                     throw IllegalArgumentException("You need to supply a command to create a command option")
                 }
 
+                // Check if we have a priced option
                 if (isPricedOption){
+                    // Check that we have a price given
                     if (price == null) {
                         bukkitWrapper.severe("You need to supply a price to create a priced option")
                         throw IllegalArgumentException("You need to supply an price to create an priced option")
                     }
 
+                    // If we want a GUI option that executes a command and has price to execute
                     return PricedCommandGUIOption(icon, command, price, economy!!)
                 }else{
+                    // If we want a GUI option that executes a command without a price
                     return CommandGUIOption(icon, command)
                 }
             }else{
