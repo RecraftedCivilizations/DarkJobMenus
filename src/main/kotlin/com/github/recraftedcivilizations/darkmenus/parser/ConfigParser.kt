@@ -1,7 +1,6 @@
 package com.github.recraftedcivilizations.darkmenus.parser
 
 import com.github.darkvanityoflight.recraftedcore.configparser.ARecraftedConfigParser
-import com.github.recraftedcivilizations.darkcitizens.parser.ConfigParser
 import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
 import com.github.recraftedcivilizations.darkmenus.menu.IMenu
 import com.github.recraftedcivilizations.darkmenus.option.IOption
@@ -9,16 +8,27 @@ import com.github.recraftedcivilizations.darkmenus.option.options.OptionFactory
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
-import org.bukkit.configuration.MemorySection
 import org.bukkit.configuration.file.FileConfiguration
-import sun.security.krb5.Config
 
+/**
+ * Use this to get information from the config file,
+ * everything needed will be stored here
+ * @param config The config file to parse
+ * @param economy The server econ
+ * @param bukkitWrapper For debugging purposes only
+ * @property options All parsed options will be available here
+ * @property menus All parsed menus will be available here
+ */
 class ConfigParser(config: FileConfiguration, val economy: Economy, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : ARecraftedConfigParser(config) {
     val options = emptySet<IOption>().toMutableSet()
     val menus = emptySet<IMenu>().toMutableSet()
 
+    /**
+     * Read the config file
+     */
     override fun read() {
 
+        // Get the different sections
         var optionsSection = config.getConfigurationSection(optionsName)
         val menusSection = config.getConfigurationSection(menusName)
 
@@ -31,6 +41,9 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
 
     }
 
+    /**
+     * Parse an config section containing options
+     */
     private fun parseOptions(optionsSection: ConfigurationSection){
 
         for (optionSection in optionsSection.getKeys(false)){
@@ -40,6 +53,9 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
 
     }
 
+    /**
+     * Parse an config section to an option and register it at [options]
+     */
     private fun configSectionToOption(optionSection: ConfigurationSection) {
 
 
@@ -92,7 +108,9 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
     }
 
 
-
+    /**
+     * Contains all static strings to identify the paths
+     */
     companion object{
         const val optionsName = "options"
         const val isGuiOptionName = "isGuiOption"
