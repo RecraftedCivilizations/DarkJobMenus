@@ -8,7 +8,9 @@ import com.github.recraftedcivilizations.darkmenus.option.IOption
 /**
  * @author DarkVanityOfLight
  */
-
+/**
+ * All things a menu can be specific to
+ */
 enum class SpecificTo{
     JOB,
     NOTHING,
@@ -28,7 +30,7 @@ object MenuFactory {
      * Create a new menu here
      * @param name The name of the menu
      * @param isGui Should the menu be a GUI
-     * @param isJobSpecific Should the menu be specific to a job
+     * @param specificTo Is the job specific to anything, like group or job
      * @param options All options this menu should contain
      * @param job Only has to be provided if you want a job specific menu
      */
