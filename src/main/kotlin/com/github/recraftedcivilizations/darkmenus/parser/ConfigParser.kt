@@ -58,6 +58,12 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
      */
     private fun configSectionToOption(optionSection: ConfigurationSection) {
 
+        val name = optionSection.getString(nameName, null)
+
+        if (name == null){
+            bukkitWrapper.warning("The property $nameName is not defined for the option ${optionSection.name}, define it using the $nameName tag!!")
+            return
+        }
 
         if (!optionSection.isSet(isGuiOptionName)){
             bukkitWrapper.warning("The property $isGuiOptionName is not set for the option ${optionSection.name}, I'll default it to true but you should set it yourself!!")
@@ -103,7 +109,7 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
             return
         }
 
-        val option = OptionFactory.newOption(isGuiOption, isPricedOption, isCommandOption, economy, command, price, icon)
+        val option = OptionFactory.newOption(optionSection.name, name, isGuiOption, isPricedOption, isCommandOption, economy, command, price, icon)
         options.add(option)
     }
 
@@ -119,6 +125,7 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
         const val iconName = "icon"
         const val priceName = "price"
         const val commandName = "command"
+        const val nameName = "name"
         const val menusName = "menus"
     }
 }

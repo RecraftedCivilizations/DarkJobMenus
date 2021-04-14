@@ -38,7 +38,7 @@ object OptionFactory {
      * @throws NotImplementedError If the requested option is not available yet
      * @return The requested option
      */
-    fun newOption(isGuiOption: Boolean, isPricedOption: Boolean, isCommandOption: Boolean, economy: Economy? = null, command: String? = null, price: Int?, icon: Material? = null): IOption {
+    fun newOption(uniqueId: String, name: String, isGuiOption: Boolean, isPricedOption: Boolean, isCommandOption: Boolean, economy: Economy? = null, command: String? = null, price: Int?, icon: Material? = null): IOption {
 
         // Check if we should create a GUI option
         if (isGuiOption){
@@ -66,10 +66,10 @@ object OptionFactory {
                     }
 
                     // If we want a GUI option that executes a command and has price to execute
-                    return PricedCommandGUIOption(icon, command, price, economy!!)
+                    return PricedCommandGUIOption(uniqueId, name, icon, command, price, economy!!)
                 }else{
                     // If we want a GUI option that executes a command without a price
-                    return CommandGUIOption(icon, command)
+                    return CommandGUIOption(uniqueId, name, icon, command)
                 }
             }else{
 

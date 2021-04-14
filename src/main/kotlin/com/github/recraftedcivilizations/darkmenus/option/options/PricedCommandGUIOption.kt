@@ -28,6 +28,8 @@ import org.bukkit.inventory.ItemStack
  * @param bukkitWrapper The bukkit wrapper, for debugging purposes only
  */
 class PricedCommandGUIOption(
+    override val uniqueId: String,
+    override val name: String,
     private val icon: Material,
     override val command: String,
     override val price: Int,

@@ -11,6 +11,8 @@ import org.bukkit.entity.Player
  * Represents an generic option that can be called from a menu
  */
 interface IOption {
+    val uniqueId: String
+    val name: String
 
     /**
      * Defines what happens when the option gets executed
