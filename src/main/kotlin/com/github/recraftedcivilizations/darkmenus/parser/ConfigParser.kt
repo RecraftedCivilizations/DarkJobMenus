@@ -47,8 +47,8 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
      */
     private fun parseOptions(optionsSection: ConfigurationSection){
 
-        for (optionSection in optionsSection.getKeys(false)){
-            val section = optionsSection.getConfigurationSection(optionSection)
+        for (configurationSection in optionsSection.getKeys(false)){
+            val section = optionsSection.getConfigurationSection(configurationSection)
             configSectionToOption(section!!)
         }
 
@@ -57,60 +57,60 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
     /**
      * Parse an config section to an option and register it at [options]
      */
-    private fun configSectionToOption(optionSection: ConfigurationSection) {
+    private fun configSectionToOption(configurationSection: ConfigurationSection) {
 
-        val name = optionSection.getString(optionNameName, null)
+        val name = configurationSection.getString(optionNameName, null)
 
         if (name == null){
-            bukkitWrapper.warning("The property $optionNameName is not defined for the option ${optionSection.name}, define it using the $optionNameName tag!!")
+            bukkitWrapper.warning("The property $optionNameName is not defined for the option ${configurationSection.name}, define it using the $optionNameName tag!!")
             return
         }
 
-        if (!optionSection.isSet(isGuiOptionName)){
-            bukkitWrapper.warning("The property $isGuiOptionName is not set for the option ${optionSection.name}, I'll default it to true but you should set it yourself!!")
+        if (!configurationSection.isSet(isGuiOptionName)){
+            bukkitWrapper.warning("The property $isGuiOptionName is not set for the option ${configurationSection.name}, I'll default it to true but you should set it yourself!!")
         }
 
-        val isGuiOption = optionSection.getBoolean(isGuiOptionName, true)
+        val isGuiOption = configurationSection.getBoolean(isGuiOptionName, true)
 
-        if (!optionSection.isSet(isPricedOptionName)){
-            bukkitWrapper.warning("The property $isPricedOptionName is not set for the option ${optionSection.name}, I'll default it to false but you should set it yourself!!")
+        if (!configurationSection.isSet(isPricedOptionName)){
+            bukkitWrapper.warning("The property $isPricedOptionName is not set for the option ${configurationSection.name}, I'll default it to false but you should set it yourself!!")
         }
 
-        val isPricedOption = optionSection.getBoolean(isPricedOptionName, true)
+        val isPricedOption = configurationSection.getBoolean(isPricedOptionName, true)
 
-        if (!optionSection.isSet(isCommandOptionName)){
-            bukkitWrapper.warning("The property $isCommandOptionName is not set for the option ${optionSection.name}, I'll default it to false but you should set it yourself!!")
+        if (!configurationSection.isSet(isCommandOptionName)){
+            bukkitWrapper.warning("The property $isCommandOptionName is not set for the option ${configurationSection.name}, I'll default it to false but you should set it yourself!!")
         }
 
-        val isCommandOption = optionSection.getBoolean(isCommandOptionName, false)
+        val isCommandOption = configurationSection.getBoolean(isCommandOptionName, false)
 
 
-        val iconAsString = optionSection.getString(iconName)
+        val iconAsString = configurationSection.getString(iconName)
         var icon: Material? = null
         if (isGuiOption) {
             if (iconAsString == null) {
-                bukkitWrapper.warning("The option ${optionSection.name} has no icon defined, I'll default it to something for you but you should define it yourself using the $iconAsString tag!!")
+                bukkitWrapper.warning("The option ${configurationSection.name} has no icon defined, I'll default it to something for you but you should define it yourself using the $iconAsString tag!!")
             } else {
                 if (Material.getMaterial(iconAsString) == null) {
-                    bukkitWrapper.warning("The icon for the option ${optionSection.name} does not exist!")
+                    bukkitWrapper.warning("The icon for the option ${configurationSection.name} does not exist!")
                 }
             }
             icon = iconAsString?.let { Material.getMaterial(it) } ?: Material.PLAYER_HEAD
         }
 
-        var price: Int = optionSection.getInt(priceName, -1)
+        var price: Int = configurationSection.getInt(priceName, -1)
         if (isPricedOption && price == -1){
-            bukkitWrapper.warning("You did not define a price for the priced option ${optionSection.name}, I'll default it to 100, but you should define it using the $priceName tag")
+            bukkitWrapper.warning("You did not define a price for the priced option ${configurationSection.name}, I'll default it to 100, but you should define it using the $priceName tag")
             price = 100
         }
 
-        val command = optionSection.getString(commandName, null)
+        val command = configurationSection.getString(commandName, null)
         if (command == null && isCommandOption){
-            bukkitWrapper.warning("You did not define a command for your command option, the option ${optionSection.name} will not be available")
+            bukkitWrapper.warning("You did not define a command for your command option, the option ${configurationSection.name} will not be available")
             return
         }
 
-        val option = OptionFactory.newOption(optionSection.name, name, isGuiOption, isPricedOption, isCommandOption, economy, command, price, icon)
+        val option = OptionFactory.newOption(configurationSection.name, name, isGuiOption, isPricedOption, isCommandOption, economy, command, price, icon)
         options.add(option)
     }
 
