@@ -9,6 +9,11 @@ import com.github.recraftedcivilizations.darkmenus.option.IOption
  * @author DarkVanityOfLight
  */
 
+enum class SpecificTo{
+    JOB,
+    NOTHING,
+}
+
 /**
  * Create new menus here
  */
@@ -27,9 +32,9 @@ object MenuFactory {
      * @param options All options this menu should contain
      * @param job Only has to be provided if you want a job specific menu
      */
-    fun newMenu(name: String, isGui: Boolean, isJobSpecific: Boolean, options: List<IOption>, job: IJob? = null): IMenu{
+    fun newMenu(name: String, isGui: Boolean, specificTo: SpecificTo, options: List<IOption>, job: IJob? = null): IMenu{
 
-        if (isGui && isJobSpecific){
+        if (isGui && specificTo == SpecificTo.JOB){
             return  JobGuiMenu(name, options, job!!)
         }else{
             bukkitWrapper.severe("There is no such menu as you defined! If you really need this create an issue at my Github!")
