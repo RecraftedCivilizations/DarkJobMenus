@@ -3,6 +3,7 @@ package com.github.recraftedcivilizations.darkmenus.parser
 import com.github.darkvanityoflight.recraftedcore.configparser.ARecraftedConfigParser
 import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
 import com.github.recraftedcivilizations.darkmenus.menu.IMenu
+import com.github.recraftedcivilizations.darkmenus.menu.menus.MenuFactory
 import com.github.recraftedcivilizations.darkmenus.option.IOption
 import com.github.recraftedcivilizations.darkmenus.option.options.OptionFactory
 import net.milkbowl.vault.economy.Economy
@@ -58,10 +59,10 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
      */
     private fun configSectionToOption(optionSection: ConfigurationSection) {
 
-        val name = optionSection.getString(nameName, null)
+        val name = optionSection.getString(optionNameName, null)
 
         if (name == null){
-            bukkitWrapper.warning("The property $nameName is not defined for the option ${optionSection.name}, define it using the $nameName tag!!")
+            bukkitWrapper.warning("The property $optionNameName is not defined for the option ${optionSection.name}, define it using the $optionNameName tag!!")
             return
         }
 
@@ -125,7 +126,7 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
         const val iconName = "icon"
         const val priceName = "price"
         const val commandName = "command"
-        const val nameName = "name"
+        const val optionNameName = "name"
         const val menusName = "menus"
     }
 }
