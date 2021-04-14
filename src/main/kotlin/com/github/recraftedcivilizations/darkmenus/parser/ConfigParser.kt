@@ -1,9 +1,12 @@
 package com.github.recraftedcivilizations.darkmenus.parser
 
 import com.github.darkvanityoflight.recraftedcore.configparser.ARecraftedConfigParser
+import com.github.recraftedcivilizations.darkcitizens.jobs.IJob
+import com.github.recraftedcivilizations.darkcitizens.jobs.JobManager
 import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
 import com.github.recraftedcivilizations.darkmenus.menu.IMenu
 import com.github.recraftedcivilizations.darkmenus.menu.menus.MenuFactory
+import com.github.recraftedcivilizations.darkmenus.menu.menus.SpecificTo
 import com.github.recraftedcivilizations.darkmenus.option.IOption
 import com.github.recraftedcivilizations.darkmenus.option.options.OptionFactory
 import net.milkbowl.vault.economy.Economy
@@ -20,7 +23,7 @@ import org.bukkit.configuration.file.FileConfiguration
  * @property options All parsed options will be available here
  * @property menus All parsed menus will be available here
  */
-class ConfigParser(config: FileConfiguration, val economy: Economy, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : ARecraftedConfigParser(config) {
+class ConfigParser(config: FileConfiguration, private val economy: Economy, private val jobManager: JobManager, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : ARecraftedConfigParser(config) {
     val options = emptySet<IOption>().toMutableSet()
     val menus = emptySet<IMenu>().toMutableSet()
 
@@ -31,7 +34,7 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
 
         // Get the different sections
         var optionsSection = config.getConfigurationSection(optionsName)
-        val menusSection = config.getConfigurationSection(menusName)
+        var menusSection = config.getConfigurationSection(menusName)
 
         if (optionsSection == null) {
             bukkitWrapper.severe("Could not find the options section, I'll define it for you, but you should add it using th $optionsName tag!!")
@@ -40,6 +43,10 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
 
         parseOptions(optionsSection)
 
+        if (menusSection == null){
+            bukkitWrapper.severe("Could not find the menus section, I'll define it for you, but you should add it using the $menusSection tag!!")
+            menusSection = config.createSection(menusName)
+        }
     }
 
     /**
@@ -114,6 +121,97 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
         options.add(option)
     }
 
+    /**
+     * Parse all menus found in the menu section
+     */
+    private fun parseMenus(configurationSection: ConfigurationSection){
+        for (menuId in configurationSection.getKeys(false)){
+            configSectionToMenu(configurationSection.getConfigurationSection(menuId)!!)
+        }
+    }
+
+    /**
+     * Parse a menu section to a menu
+     */
+    private fun configSectionToMenu(configurationSection: ConfigurationSection){
+
+
+        val name = configurationSection.getString(menuNameName, null)
+
+        if (name == null){
+            bukkitWrapper.warning("The property $menuNameName is not defined for the menu ${configurationSection.name}, define it using the $menuNameName tag!!")
+            return
+        }
+
+        if (!configurationSection.isSet(isGuiMenuName)){
+            bukkitWrapper.warning("The property $isGuiMenuName is not defined for the menu ${configurationSection.name}, I'll default it to true but you should define it yourself using the $isGuiMenuName tag!!")
+        }
+
+        val isGuiMenu = configurationSection.getBoolean(isGuiMenuName, false)
+
+        val specificTo: SpecificTo
+        if (!configurationSection.isSet(menuSpecificToName)){
+            bukkitWrapper.warning("The property $menuSpecificToName is not defined for the menu ${configurationSection.name}, I'll default it to NOTHING. but you should define it using the $menuSpecificToName tag!!")
+            specificTo = SpecificTo.NOTHING
+        }else{
+            val specificToId = configurationSection.getString(menuSpecificToName)!!
+
+            specificTo = try {
+                SpecificTo.valueOf(specificToId)
+            }catch (e: IllegalArgumentException){
+                bukkitWrapper.warning("Could not find the specificTo type for your menu ${configurationSection.name}, I'll default it to NOTHING, but you should fix this")
+                SpecificTo.NOTHING
+            }
+        }
+
+        if (!configurationSection.isSet(menuOptionsName)){
+            bukkitWrapper.warning("You didn't define any options for the menu ${configurationSection.name}!!")
+            return
+        }
+
+        val optionsNames = configurationSection.getStringList(menuOptionsName)
+        val parsedOptions = mutableListOf<IOption>()
+
+        // Search for the defined action and add it to the action set
+        for(optionName in optionsNames){
+
+            // Parse the string to the actual option
+            var parsedOption: IOption? = null
+            for (option in options){
+                if (option.uniqueId == optionName){
+                    parsedOption = option
+                    break
+                }
+            }
+
+            // Warn if no option was found else add it to the parsed options
+            if (parsedOption == null){
+                bukkitWrapper.warning("Could not find the option $optionName, did you define it in the $optionsName section?")
+            }else{
+                parsedOptions.add(parsedOption)
+            }
+
+        }
+
+        var job: IJob? = null
+        if (specificTo == SpecificTo.JOB){
+            if (!configurationSection.isSet(menuJobName)){
+                bukkitWrapper.warning("You did not define a job for the the job menu ${configurationSection.name}!!")
+                return
+            }else{
+                job = jobManager.getJob(configurationSection.getString(menuJobName))
+
+                if (job == null){
+                    bukkitWrapper.warning("Could not find the job defined for the job menu ${configurationSection.name}")
+                    return
+                }
+            }
+        }
+
+
+        val menu = MenuFactory.newMenu(name, isGuiMenu, specificTo, parsedOptions, job)
+
+    }
 
     /**
      * Contains all static strings to identify the paths
@@ -128,5 +226,10 @@ class ConfigParser(config: FileConfiguration, val economy: Economy, private val 
         const val commandName = "command"
         const val optionNameName = "name"
         const val menusName = "menus"
+        const val menuNameName = "name"
+        const val menuJobName = "job"
+        const val menuOptionsName = "options"
+        const val isGuiMenuName = "isGuiMenu"
+        const val menuSpecificToName = "specificTo"
     }
 }
