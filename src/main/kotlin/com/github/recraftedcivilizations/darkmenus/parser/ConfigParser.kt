@@ -210,6 +210,7 @@ class ConfigParser(config: FileConfiguration, private val economy: Economy, priv
 
 
         val menu = MenuFactory.newMenu(name, isGuiMenu, specificTo, parsedOptions, job)
+        menus.add(menu)
 
     }
 
