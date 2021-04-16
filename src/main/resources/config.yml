@@ -1,0 +1,37 @@
+options:
+  giveStick:
+    name: Give a stick
+    isGuiOption: true
+    isPricedOption: false
+    isCommandOption: true
+    icon: STICK
+    command: /give %player_name% stick 1
+  giveExpensiveStick:
+    name: Give an expansive stick
+    isGuiOption: true
+    isPricedOption: true
+    isCommandOption: true
+    price: 100
+    icon: STICK
+    command: /give %player_name% stick 1
+  giveTenSticks:
+    name: Give a stick
+    isGuiOption: true
+    isPricedOption: false
+    isCommandOption: true
+    icon: STICK
+    command: /give %player_name% stick 10
+
+menus:
+  someMenu:
+    name: Some Menu
+    isGuiMenu: true
+    specificTo: NOTHING
+    options: [giveStick, giveExpensiveStick]
+
+  someExclusiveMenu:
+    name: Some Exclusive Menu
+    isGuiMenu: true
+    specificTo: JOB
+    job: Stick Dealer
+    options: [giveStick, giveExpensiveStick, giveTenSticks]
