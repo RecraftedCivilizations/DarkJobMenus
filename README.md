@@ -18,14 +18,14 @@ giveStick:
     icon: STICK
     command: /give %player_name% stick
 ```
-> Note:
+> Note:  
 > At the moment your option has to be a GUI option, and a command option to be used
 
 With different Option types come different property that have to be defined:
 
-> A GUI option requires the icon tag
-> A priced option requires the price tag
-> A command option requires the command tag
+> A GUI option requires the icon tag  
+> A priced option requires the price tag  
+> A command option requires the command tag  
 
 ### How do I create commands custom to every player
 For this purpose we use the PlaceholderAPI to replace placeholders
@@ -48,13 +48,13 @@ someMenu:
     options: [giveStick]
 ```
 
-> Note:
+> Note:  
 > At the moment only GUI menus are available
 
 You can see the `specificTo` tag, if this is set to `NOTHING` everyone can access this menu at every time.
 Another option is `JOB` if it is set on a menu the menu will only be available to a job that was specified.
 
-> Note:
+> Note:  
 > If specificTo is set to JOB you have to set the job property to the jobs name
 
 ### Great now I have a working menu but how do I use it?
