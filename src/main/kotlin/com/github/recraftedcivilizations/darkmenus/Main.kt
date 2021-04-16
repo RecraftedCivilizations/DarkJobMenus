@@ -2,6 +2,7 @@ package com.github.recraftedcivilizations.darkmenus
 
 import com.github.darkvanityoflight.recraftedcore.ARecraftedPlugin
 import com.github.recraftedcivilizations.darkcitizens.DarkCitizens
+import com.github.recraftedcivilizations.darkmenus.commands.DarkMenusShow
 import com.github.recraftedcivilizations.darkmenus.parser.ConfigParser
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
@@ -24,6 +25,8 @@ class Main : ARecraftedPlugin(){
 
         configParser = ConfigParser(config, econ, jobManager)
         configParser.read()
+
+        getCommand("darkmenus")!!.setExecutor(DarkMenusShow(configParser))
 
 
     }
