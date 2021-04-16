@@ -1,9 +1,12 @@
 package com.github.recraftedcivilizations.darkmenus.menu.menus
 
+import com.github.recraftedcivilizations.darkcitizens.DarkCitizens
 import com.github.recraftedcivilizations.darkcitizens.jobs.IJob
 import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
+import com.github.recraftedcivilizations.darkmenus.menu.IJobMenu
 import com.github.recraftedcivilizations.darkmenus.menu.IMenu
 import com.github.recraftedcivilizations.darkmenus.option.IOption
+import org.bukkit.entity.Player
 
 /**
  * @author DarkVanityOfLight
@@ -12,8 +15,25 @@ import com.github.recraftedcivilizations.darkmenus.option.IOption
  * All things a menu can be specific to
  */
 enum class SpecificTo{
-    JOB,
-    NOTHING,
+    JOB{
+        override fun canExecute(player: Player, menu: IMenu): Boolean {
+            val dPlayer = DarkCitizens.dPlayerManager.getDPlayer(player)!!
+
+            if (menu !is IJobMenu) {
+                throw IllegalArgumentException("The supplied menu isn't a job menu!!")
+            }
+
+            return menu.job.name == dPlayer.job
+        }
+       },
+
+    NOTHING{
+        override fun canExecute(player: Player, menu: IMenu): Boolean {
+           return true
+        }
+    };
+
+    abstract fun canExecute(player: Player, menu: IMenu): Boolean
 }
 
 /**
