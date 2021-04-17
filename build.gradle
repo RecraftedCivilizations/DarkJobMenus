@@ -11,9 +11,9 @@ group 'com.github.recraftedcivilizations'
 version '1.0-SNAPSHOT'
 
 // plugin.yml values
-def pluginName = ''
-def pluginDescription = ''
-def pluginAuthors = []
+def pluginName = 'DarkMenus'
+def pluginDescription = 'Customizable menus for the DarkCitizens plugin'
+def pluginAuthors = ['DarkVanityOfLight']
 
 // Base repos
 repositories {
@@ -61,7 +61,7 @@ bukkit {
     meta {
         name = pluginName
         description = pluginDescription
-        main = group + '.' + pluginName + '.' + 'Main'
+        main = group + '.' + pluginName.toLowerCase() + '.' + 'Main'
         version = version
         authors = pluginAuthors
     }
