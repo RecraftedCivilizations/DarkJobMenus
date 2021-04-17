@@ -1,0 +1,14 @@
+depend: [DarkCitizens, RecraftedCore, PlaceholderAPI, Vault]
+api-version: 1.16
+commands:
+  darkmenus:
+    description: Access menus
+    usage: /darkmenus <menu name>
+    permission: darkmenus.access
+    permission-message: You don't have the permissions to access menus
+
+permissions:
+  darkmenus.access:
+    description: Access and execute options in a menu
+    default: true
+
