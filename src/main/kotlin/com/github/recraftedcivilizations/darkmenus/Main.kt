@@ -15,6 +15,7 @@ class Main : ARecraftedPlugin(){
     override fun onEnable() {
         val jobManager = DarkCitizens.jobManager
 
+        saveDefaultConfig()
 
         if (Bukkit.getPluginManager().isPluginEnabled("Vault")){
             val rsp : RegisteredServiceProvider<Economy>? =  server.servicesManager.getRegistration(Economy::class.java)
