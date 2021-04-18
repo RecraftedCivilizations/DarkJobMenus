@@ -1,6 +1,8 @@
 package com.github.recraftedcivilizations.darkmenus.parser
 
 import com.github.darkvanityoflight.recraftedcore.configparser.ARecraftedConfigParser
+import com.github.recraftedcivilizations.darkcitizens.groups.Group
+import com.github.recraftedcivilizations.darkcitizens.groups.GroupManager
 import com.github.recraftedcivilizations.darkcitizens.jobs.IJob
 import com.github.recraftedcivilizations.darkcitizens.jobs.JobManager
 import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
@@ -23,7 +25,7 @@ import org.bukkit.configuration.file.FileConfiguration
  * @property options All parsed options will be available here
  * @property menus All parsed menus will be available here
  */
-class ConfigParser(config: FileConfiguration, private val economy: Economy, private val jobManager: JobManager, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : ARecraftedConfigParser(config) {
+class ConfigParser(config: FileConfiguration, private val economy: Economy, private val jobManager: JobManager, private val groupManager: GroupManager, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()) : ARecraftedConfigParser(config) {
     val options = emptySet<IOption>().toMutableSet()
     val menus = emptySet<IMenu>().toMutableSet()
 
@@ -208,8 +210,23 @@ class ConfigParser(config: FileConfiguration, private val economy: Economy, priv
             }
         }
 
+        var group: Group? = null
+        if (specificTo == SpecificTo.GROUP){
+            if (!configurationSection.isSet(menuGroupName)){
+                bukkitWrapper.warning("You did not define a group for the the group menu ${configurationSection.name}!!")
+                return
+            }else{
+                group = groupManager.getGroup(configurationSection.getString(menuGroupName))
 
-        val menu = MenuFactory.newMenu(name, isGuiMenu, specificTo, parsedOptions, job)
+                if (group == null){
+                    bukkitWrapper.warning("Could not find the group defined for the group menu ${configurationSection.name}")
+                    return
+                }
+            }
+        }
+
+
+        val menu = MenuFactory.newMenu(name, isGuiMenu, specificTo, parsedOptions, job, group)
         menus.add(menu)
 
     }
@@ -229,6 +246,7 @@ class ConfigParser(config: FileConfiguration, private val economy: Economy, priv
         const val menusName = "menus"
         const val menuNameName = "name"
         const val menuJobName = "job"
+        const val menuGroupName = "group"
         const val menuOptionsName = "options"
         const val isGuiMenuName = "isGuiMenu"
         const val menuSpecificToName = "specificTo"
