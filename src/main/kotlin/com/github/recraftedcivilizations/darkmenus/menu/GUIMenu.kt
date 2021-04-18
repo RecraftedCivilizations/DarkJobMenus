@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 /**
  * Represents an menu that has an graphical user interface
  */
-interface GUIMenu : IJobMenu{
+interface GUIMenu : IMenu{
 
     /**
      * A list with all options of this menu
