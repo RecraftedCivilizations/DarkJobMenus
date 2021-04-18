@@ -53,9 +53,17 @@ someMenu:
 
 You can see the `specificTo` tag, if this is set to `NOTHING` everyone can access this menu at every time.
 Another option is `JOB` if it is set on a menu the menu will only be available to a job that was specified.
+The last option is `GROUP` if this is set, the menu will be only available to users that are in this group
+This are all available specifics:
+```
+NOTHING
+JOB
+GROUP
+```
 
 > Note:  
 > If specificTo is set to JOB you have to set the job property to the jobs name
+> If specificTo is set to GROUP you have to set the group property to the groups name
 
 ### Great now I have a working menu but how do I use it?
 To open a menu in-game just use the: `/darkmenus <menu name>` command
