@@ -66,10 +66,21 @@ object MenuFactory {
      * @param options All options this menu should contain
      * @param job Only has to be provided if you want a job specific menu
      */
-    fun newMenu(name: String, isGui: Boolean, specificTo: SpecificTo, options: List<IOption>, job: IJob? = null): IMenu{
+    fun newMenu(name: String, isGui: Boolean, specificTo: SpecificTo, options: List<IOption>, job: IJob? = null, group: Group? = null): IMenu{
 
-        if (isGui && specificTo == SpecificTo.JOB){
-            return  JobGuiMenu(name, options, job!!)
+        if (isGui){
+            return when (specificTo) {
+                SpecificTo.JOB -> {
+                    JobGuiMenu(name, options, job!!)
+                }
+                SpecificTo.GROUP -> {
+                    GroupGuiMenu(name, options, group!!)
+                }
+                else -> {
+                    bukkitWrapper.severe("There is no such menu as you defined! If you really need this create an issue at my Github!")
+                    throw NotImplementedError("There is no such menu as you defined")
+                }
+            }
         }else{
             bukkitWrapper.severe("There is no such menu as you defined! If you really need this create an issue at my Github!")
             throw NotImplementedError("There is no such menu as you defined")
