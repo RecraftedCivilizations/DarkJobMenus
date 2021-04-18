@@ -17,7 +17,6 @@ import org.bukkit.entity.Player
 interface IMenu {
     val options: List<IOption>
     val name: String
-    val specificTo: SpecificTo
 
     /**
      * Execute an specific option

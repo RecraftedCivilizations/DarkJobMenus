@@ -23,7 +23,7 @@ import org.bukkit.entity.Player
  * @param job The job this GUI is for
  * @param bukkitWrapper The bukkit wrapper, debugging purposes only
  */
-class JobGuiMenu(override val name: String, options: List<IOption>, override val job: IJob, override val specificTo: SpecificTo, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()
+class JobGuiMenu(override val name: String, options: List<IOption>, override val job: IJob, private val bukkitWrapper: BukkitWrapper = BukkitWrapper()
 ) : IJobMenu, GUIMenu {
 
     private val gui: InventoryGUI
