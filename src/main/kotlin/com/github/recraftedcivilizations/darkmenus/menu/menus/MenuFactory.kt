@@ -1,8 +1,10 @@
 package com.github.recraftedcivilizations.darkmenus.menu.menus
 
 import com.github.recraftedcivilizations.darkcitizens.DarkCitizens
+import com.github.recraftedcivilizations.darkcitizens.groups.Group
 import com.github.recraftedcivilizations.darkcitizens.jobs.IJob
 import com.github.recraftedcivilizations.darkmenus.BukkitWrapper
+import com.github.recraftedcivilizations.darkmenus.menu.IGroupMenu
 import com.github.recraftedcivilizations.darkmenus.menu.IJobMenu
 import com.github.recraftedcivilizations.darkmenus.menu.IMenu
 import com.github.recraftedcivilizations.darkmenus.option.IOption
@@ -26,6 +28,16 @@ enum class SpecificTo{
             return menu.job.name == dPlayer.job
         }
        },
+    GROUP{
+        override fun canExecute(player: Player, menu: IMenu): Boolean {
+            val dPlayer = DarkCitizens.dPlayerManager.getDPlayer(player)!!
+            if (menu !is IGroupMenu){
+                throw  IllegalArgumentException("The supplied menu isn't a group menu!!")
+            }
+            val group = DarkCitizens.jobManager.getJob(dPlayer.job)!!.group
+            return menu.group.name == group
+        }
+    },
 
     NOTHING{
         override fun canExecute(player: Player, menu: IMenu): Boolean {
