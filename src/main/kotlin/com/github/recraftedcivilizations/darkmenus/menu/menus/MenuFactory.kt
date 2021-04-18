@@ -76,6 +76,9 @@ object MenuFactory {
                 SpecificTo.GROUP -> {
                     GroupGuiMenu(name, options, group!!)
                 }
+                SpecificTo.NOTHING -> {
+                    GuiMenu(name, options)
+                }
                 else -> {
                     bukkitWrapper.severe("There is no such menu as you defined! If you really need this create an issue at my Github!")
                     throw NotImplementedError("There is no such menu as you defined")
