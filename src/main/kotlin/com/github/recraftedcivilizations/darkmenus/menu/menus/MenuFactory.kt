@@ -57,7 +57,7 @@ object MenuFactory {
     fun newMenu(name: String, isGui: Boolean, specificTo: SpecificTo, options: List<IOption>, job: IJob? = null): IMenu{
 
         if (isGui && specificTo == SpecificTo.JOB){
-            return  JobGuiMenu(name, options, job!!, specificTo)
+            return  JobGuiMenu(name, options, job!!)
         }else{
             bukkitWrapper.severe("There is no such menu as you defined! If you really need this create an issue at my Github!")
             throw NotImplementedError("There is no such menu as you defined")
